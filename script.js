@@ -1,29 +1,64 @@
-function convertTemperature() {
-    const inputTemp = parseFloat(document.getElementById("inputTemp").value);
-    const fromUnit = document.getElementById("fromUnit").value;
-    const toUnit = document.getElementById("toUnit").value;
-    
-    let result;
-
-    if(fromUnit===fromUnit){
-        result=inputTemp;
+let currentQuestion = 0;
+let score = 0;
+const questions = [
+    {
+      question: "What is the capital of France?",
+      options: ["London", "Berlin", "Paris", "Madrid"],
+      correct: 3
+    },
+    {
+      question: "Which planet is known as the Red Planet?",
+      options: ["Venus", "Mars", "Jupiter", "Saturn"],
+      correct: 2
+    },
+      {
+        question: "what is the capital of Iran?",
+        options:["kabul","Taiwan","Muskat","Tehran"],
+        correct: 4
+      },
+    {
+        question: "Home Minister of India?",
+        options:["Rajnath singh","Amit Shah","Nitin Gadkari","Smriti Irani"],
+        correct: 2
     }
-    else if (fromUnit === "celsius" && toUnit === "fahrenheit") {
-        result = (inputTemp * 9/5) + 32;
-    } else if (fromUnit === "celsius" && toUnit === "kelvin") {
-        result = inputTemp + 273.15;
-    } else if (fromUnit === "fahrenheit" && toUnit === "celsius") {
-        result = (inputTemp - 32) * 5/9;
-    } else if (fromUnit === "fahrenheit" && toUnit === "kelvin") {
-        result = (inputTemp - 32) * 5/9 + 273.15;
-    } else if (fromUnit === "kelvin" && toUnit === "celsius") {
-        result = inputTemp - 273.15;
-    } else if (fromUnit === "kelvin" && toUnit === "fahrenheit") {
-        result = (inputTemp - 273.15) * 9/5 + 32;
+
+  ];
+  
+
+  
+  function showQuestion() {
+    const questionElem = document.getElementById("question");
+    const optionsElem = document.querySelector(".options");
+    questionElem.textContent = questions[currentQuestion].question;
+  
+    optionsElem.innerHTML = "";
+    for (let i = 0; i < questions[currentQuestion].options.length; i++) {
+      const optionBtn = document.createElement("button");
+      optionBtn.className = "option";
+      optionBtn.textContent = questions[currentQuestion].options[i];
+      optionBtn.addEventListener("click", () => checkAnswer(i));
+      optionsElem.appendChild(optionBtn);
+    }
+  }
+  
+  function checkAnswer(selectedIndex) {
+    if (questions[currentQuestion].correct === selectedIndex) {
+      score=score+1;
+    }
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      showQuestion();
     } else {
-        // Invalid conversion, return error
-        result = "Invalid conversion";
+      showResult(); // Move this line here
     }
-
-    document.getElementById("result").textContent = result.toFixed(2);
-}
+  }
+  
+  
+  function showResult() {
+    const scoreElem = document.getElementById("score");
+    scoreElem.textContent = `${score} out of ${questions.length}`;
+  }
+  
+  
+  showQuestion();
+  
